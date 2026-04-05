@@ -26,14 +26,35 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Image.network('https://img.lightshot.app/cUeGAJUNTr2_hmMVt_vCbQ.png', width: 24, height: 24),
+          CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: IconButton(
+                icon: Image.network('https://img.lightshot.app/cUeGAJUNTr2_hmMVt_vCbQ.png', width: 24, height: 24),
+                onPressed: () {},
+              ),
+            ),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: Image.network('https://img.lightshot.app/XteT11nvRv-S5j1IisHOXg.png', width: 24, height: 24),
+          SizedBox(width: 10,),
+          CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: IconButton(
+                icon: Image.network('https://img.lightshot.app/XteT11nvRv-S5j1IisHOXg.png', width: 24, height: 24),
+                onPressed: () {},
+              ),
+            ),
           ),
+          SizedBox(width: 10,),
+
         ],
       ),
       body: SingleChildScrollView(
