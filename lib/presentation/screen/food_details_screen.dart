@@ -38,6 +38,7 @@ class FoodDetailsScreen extends StatelessWidget {
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
+                      backgroundColor: Colors.white54,
                     ),
                   ),
                   CircleAvatar(
