@@ -36,18 +36,35 @@ class ApiService {
     }
   }
 
-  Future<List<Recipe>> recipesDetails(String id) async {
+  Future<List<Recipe>> randomRecipes() async {
     final response = await http.get(
       Uri.parse(
-        '${AppStrings.baseUrl}/{$id}/information',
+        '${AppStrings.baseUrl}/random?apiKey=${AppStrings.apiKey}&number=10',
       ),
     );
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-      final List results = json['results'];
+      final List results = json['recipes'];
       return results.map((e) => RecipeModel.fromJson(e)).toList();
     } else {
-      throw Exception('Failed to search recipes');
+      throw Exception('Failed to fetch random recipes');
+    }
+  }
+
+  Future<List<Recipe>> recipesDetails(String id) async {
+    final response = await http.get(
+      Uri.parse(
+        '${AppStrings.baseUrl}/$id/information?apiKey=${AppStrings.apiKey}',
+      ),
+    );
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      // For details, it usually returns a single object. 
+      // Wrapping in a list to match the current return type if needed, 
+      // but usually detail API returns one object.
+      return [RecipeModel.fromJson(json)];
+    } else {
+      throw Exception('Failed to fetch recipe details');
     }
   }
 }

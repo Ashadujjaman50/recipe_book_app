@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_book_app/presentation/screen/search_screen.dart';
 import '../../core/app_strings.dart';
 import '../provider/recipe_provider.dart';
+import '../provider/random_recipe_provider.dart';
+import '../screen/search_screen.dart';
 import '../widget/category_item_card.dart';
 import '../widget/popular_recipe_card.dart';
 import '../widget/weekly_recipe_card.dart';
@@ -30,10 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    // স্ক্রিন লোড হওয়ার সাথে সাথে দুটি API কল করা হচ্ছে
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<RecipeProvider>().fetchRecipesByCategory(_selectedCategory);
+      context.read<RandomRecipeProvider>().fetchRandomRecipes();
     });
   }
 
@@ -58,128 +60,132 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         actions: [
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: IconButton(
-                icon: Image.network('https://img.lightshot.app/cUeGAJUNTr2_hmMVt_vCbQ.png', width: 24, height: 24),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SearchScreen()),
-                  );
-                },
-              ),
-            ),
-          ),
-          SizedBox(width: 10,),
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: IconButton(
-                icon: Image.network('https://img.lightshot.app/XteT11nvRv-S5j1IisHOXg.png', width: 24, height: 24),
-                onPressed: () {},
-              ),
-            ),
-          ),
-          SizedBox(width: 10,),
-
+          _buildActionButton('https://img.lightshot.app/cUeGAJUNTr2_hmMVt_vCbQ.png', () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchScreen()));
+          }),
+          const SizedBox(width: 10),
+          _buildActionButton('https://img.lightshot.app/XteT11nvRv-S5j1IisHOXg.png', () {}),
+          const SizedBox(width: 16),
         ],
       ),
-
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("Categories", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-
-            _buildCategoryList(),
-
-            const SizedBox(height: 25),
-            const Text("Popular Recipes", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 15),
-
-            SizedBox(
-              height: 260,
-              child: Consumer<RecipeProvider>(
-                builder: (context, provider, child) {
-                  if (provider.isLoading) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (provider.categoryRecipes.isEmpty) {
-                    return Center(
-                      child: Text('No recipes found for this category.'),
-                    );
-                  }
-                  return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: provider.categoryRecipes.length,
-                      itemBuilder: (context, index) {
-                        return PopularRecipeCard(
-                          context: context, title: provider.categoryRecipes[index].title, author: "Kadin Curtis", rating: "5.0", imgUrl: provider.categoryRecipes[index].image,
-                        );
-                      },
-                  );
-                }
-
-              ),
-            ),
-
-            const SizedBox(height: 25),
-            const Text("Recipes of The Weeks", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 15),
-            WeeklyRecipeCard(context: context, title: "Pancake", author: "Terry Carder", rating: "4.5", imgUrl: 'https://img.lightshot.app/y2v_pm1xR5uiIz099TKwIA.png'),
-            WeeklyRecipeCard(context: context, title: "Chicken Alfredo", author: "Carter Carder", rating: "4.0", imgUrl: 'https://img.lightshot.app/z6H5Kx8CQX6-tmU-kTI_IA.png'),
-            WeeklyRecipeCard(context: context, title: "Fried Rice", author: "Kadin Curtis", rating: "4.8", imgUrl: 'https://img.lightshot.app/mFKUgv0RRQaB_4-4grCr1Q.png'),
-          ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          context.read<RecipeProvider>().fetchRecipesByCategory(_selectedCategory);
+          context.read<RandomRecipeProvider>().fetchRandomRecipes();
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Categories", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              _buildCategoryList(),
+              const SizedBox(height: 25),
+              const Text("Popular Recipes", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 15),
+              _buildPopularRecipesSection(),
+              const SizedBox(height: 25),
+              const Text("Recipes of The Week", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 15),
+              _buildWeeklyRecipesSection(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: const CustomBottomNavBar(currentIndex: 0),
     );
   }
 
+  Widget _buildActionButton(String iconUrl, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.grey.shade300),
+        ),
+        child: Image.network(iconUrl, width: 24, height: 24),
+      ),
+    );
+  }
+
   Widget _buildCategoryList() {
     return SizedBox(
-      height: 60,
+      height: 50,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final category = categories[index];
-          final isSelected = category == _selectedCategory;
-
           return Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.only(right: 8.0),
             child: GestureDetector(
               onTap: () {
-                if (_selectedCategory == category) return;
-
-                setState(() {
-                  _selectedCategory = category;
-                });
-
+                setState(() => _selectedCategory = category);
                 context.read<RecipeProvider>().fetchRecipesByCategory(category);
               },
-              child: CategoryItemWidget(title: category, isSelected: isSelected),
+              child: CategoryItemWidget(title: category, isSelected: category == _selectedCategory),
             ),
           );
         },
       ),
     );
   }
+
+  Widget _buildPopularRecipesSection() {
+    return SizedBox(
+      height: 260,
+      child: Consumer<RecipeProvider>(
+        builder: (context, provider, child) {
+          if (provider.isLoading && provider.categoryRecipes.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (provider.categoryRecipes.isEmpty) {
+            return const Center(child: Text('No recipes found.'));
+          }
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: provider.categoryRecipes.length,
+            itemBuilder: (context, index) {
+              final recipe = provider.categoryRecipes[index];
+              return PopularRecipeCard(
+                context: context,
+                title: recipe.title,
+                author: "Kadin Curtis",
+                rating: "5.0",
+                imgUrl: recipe.image,
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildWeeklyRecipesSection() {
+    return Consumer<RandomRecipeProvider>(
+      builder: (context, provider, child) {
+        if (provider.isWeeklyLoading && provider.weeklyRecipes.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (provider.weeklyRecipes.isEmpty) {
+          return const Center(child: Text('No weekly recipes found.'));
+        }
+        return Column(
+          children: provider.weeklyRecipes.map((recipe) {
+            return WeeklyRecipeCard(
+              context: context,
+              title: recipe.title,
+              author: "Terry Carder",
+              rating: "4.5",
+              imgUrl: recipe.image,
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
 }
-
-
-
-
-

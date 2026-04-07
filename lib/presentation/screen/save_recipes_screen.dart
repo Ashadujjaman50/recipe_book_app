@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'food_details_screen.dart';
+import '../widget/save_recipe_card.dart';
 import 'home_screen.dart';
 import '../widget/bottom_navigation_bar.dart';
 
@@ -44,24 +44,7 @@ class SavedRecipesScreen extends StatelessWidget {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.grey.shade300),
-                ),
-                child: IconButton(
-                  icon: Image.network('https://img.lightshot.app/cUeGAJUNTr2_hmMVt_vCbQ.png', width: 20),
-                  onPressed: () {},
-                ),
-              ),
-            ),
-          ),
-        ],
+
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -112,48 +95,12 @@ class SavedRecipesScreen extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  _buildSavedRecipeItem(
-                    context,
-                    "Pancake",
-                    "4.5",
-                    "Kadin Curtis",
-                    'https://img.lightshot.app/y2v_pm1xR5uiIz099TKwIA.png',
-                  ),
-                  _buildSavedRecipeItem(
-                    context,
-                    "Oyster Dish",
-                    "4.3",
-                    "Terry Carder",
-                    'https://img.lightshot.app/ESesIcT8S82HFFY6oSYSVw.png',
-                  ),
-                  _buildSavedRecipeItem(
-                    context,
-                    "Fried Rice",
-                    "4.8",
-                    "Carter Carder",
-                    'https://img.lightshot.app/vYPAQEhATfa0yQ82AuC_dA.png',
-                  ),
-                  _buildSavedRecipeItem(
-                    context,
-                    "Greek Quinoa Salad",
-                    "3.9",
-                    "Carter Carder",
-                    'https://img.lightshot.app/QxCpEw-YSSyb-c4NJIdV0w.png',
-                  ),
-                  _buildSavedRecipeItem(
-                    context,
-                    "Classic Fluffy",
-                    "3.8",
-                    "Desirae Herwitz",
-                    'https://img.lightshot.app/mFKUgv0RRQaB_4-4grCr1Q.png',
-                  ),
-                  _buildSavedRecipeItem(
-                    context,
-                    "Cacao Maca Walnut",
-                    "3.7",
-                    "Kadin Curtis",
-                    'https://img.lightshot.app/z6H5Kx8CQX6-tmU-kTI_IA.png',
-                  ),
+                  SaveRecipeItem(context: context, title: "Pancake", rating: "4.5", author: "Kadin Curtis", imgUrl: 'https://img.lightshot.app/y2v_pm1xR5uiIz099TKwIA.png'),
+                  SaveRecipeItem(context: context, title: "Oyster Dish", rating: "4.3", author: "Terry Carder", imgUrl: 'https://img.lightshot.app/ESesIcT8S82HFFY6oSYSVw.png'),
+                  SaveRecipeItem(context: context, title: "Fried Rice", rating: "4.8", author: "Carter Carder", imgUrl: 'https://img.lightshot.app/vYPAQEhATfa0yQ82AuC_dA.png'),
+                  SaveRecipeItem(context: context, title: "Greek Quinoa Salad", rating: "3.9", author: "Carter Carder", imgUrl: 'https://img.lightshot.app/QxCpEw-YSSyb-c4NJIdV0w.png'),
+                  SaveRecipeItem(context: context, title: "Classic Fluffy", rating: "3.8", author: "Desirae Herwitz", imgUrl: 'https://img.lightshot.app/mFKUgv0RRQaB_4-4grCr1Q.png'),
+                  SaveRecipeItem(context: context, title: "Cacao Maca Walnut", rating: "3.7", author: "Kadin Curtis", imgUrl: 'https://img.lightshot.app/z6H5Kx8CQX6-tmU-kTI_IA.png'),
                 ],
               ),
             ),
@@ -163,57 +110,5 @@ class SavedRecipesScreen extends StatelessWidget {
       bottomNavigationBar: const CustomBottomNavBar(currentIndex: 3),
     );
   }
-
-  Widget _buildSavedRecipeItem(BuildContext context, String title, String rating, String author, String imgUrl) {
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const FoodDetailsScreen()),
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: Image.network(imgUrl, height: 100, width: 100, fit: BoxFit.cover),
-            ),
-            const SizedBox(width: 15),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                  const SizedBox(height: 5),
-                  Row(
-                    children: [
-                      const Icon(Icons.star, color: Colors.amber, size: 18),
-                      const SizedBox(width: 4),
-                      Text(rating, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    "By: $author",
-                    style: const TextStyle(color: Colors.grey, fontSize: 14),
-                  ),
-                ],
-              ),
-            ),
-            Image.network(
-              'https://img.lightshot.app/sgYyX5kwTsqM623JXgAAaQ.png',
-              width: 24,
-              height: 24,
-              color: Colors.deepOrange,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
+

@@ -85,7 +85,7 @@ class SearchRecipeCard extends StatelessWidget {
                     const SizedBox(width: 8),
                     const Icon(
                       Icons.bookmark_rounded,
-                      color: AppColors.primary,
+                      color: AppColors.grey,
                       size: 20,
                     ),
                   ],

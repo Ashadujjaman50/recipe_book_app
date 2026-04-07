@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_book_app/presentation/provider/random_recipe_provider.dart';
 import 'package:recipe_book_app/presentation/provider/recipe_provider.dart';
 import 'presentation/screen/home_screen.dart';
 
@@ -13,8 +14,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => RecipeProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => RecipeProvider()),
+        ChangeNotifierProvider(create: (context) => RandomRecipeProvider()),
+      ],
       child: MaterialApp(
         title: 'Recipe Book App',
         theme: ThemeData(

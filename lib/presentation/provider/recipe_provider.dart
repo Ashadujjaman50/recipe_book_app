@@ -9,22 +9,22 @@ class RecipeProvider extends ChangeNotifier {
   List<Recipe> _categoryRecipes = [];
   List<Recipe> get categoryRecipes => _categoryRecipes;
 
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
   List<Recipe> _searchResults = [];
   List<Recipe> get searchResults => _searchResults;
 
+
+
   Future<void> fetchRecipesByCategory(String category) async {
     _isLoading = true;
     notifyListeners();
     try {
       _categoryRecipes = await _apiService.getRecipesByCategory(category);
-      print(
-        'Fetched ${_categoryRecipes.length} recipes for category: $category',
-      );
     } catch (e) {
-      print('Error fetching recipes: $e');
+      print('Error fetching category recipes: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -38,6 +38,20 @@ class RecipeProvider extends ChangeNotifier {
       _searchResults = await _apiService.searchRecipes(query);
     } catch (e) {
       print('Error searching recipes: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> recipesDetails(String id) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      // Logic might need to be adjusted if this returns a single recipe details
+      await _apiService.recipesDetails(id);
+    } catch (e) {
+      print('Error fetching recipe details: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
