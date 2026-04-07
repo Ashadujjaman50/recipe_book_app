@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/app_colors.dart';
-import '../../domain/entities/recipe.dart';
+import '../../domain/entities/recipe_entities.dart';
 
 class SearchRecipeCard extends StatelessWidget {
   const SearchRecipeCard({super.key, required this.recipe});

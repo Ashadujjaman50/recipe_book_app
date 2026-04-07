@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../../core/app_strings.dart';
-import '../../domain/entities/recipe.dart';
+import '../../domain/entities/recipe_entities.dart';
+import '../model/recipe_details_model.dart';
 import '../model/recipe_model.dart';
 
 class ApiService {
+
   Future<List<Recipe>> getRecipesByCategory(String category) async {
     final url = category == 'All'
         ? '${AppStrings.baseUrl}/complexSearch?apiKey=${AppStrings.apiKey}'
@@ -36,16 +38,16 @@ class ApiService {
     }
   }
 
-  Future<List<Recipe>> randomRecipes() async {
+  Future<List<RecipeDetailsModel>> getRandomRecipes() async {
     final response = await http.get(
       Uri.parse(
-        '${AppStrings.baseUrl}/random?apiKey=${AppStrings.apiKey}&number=10',
+        '${AppStrings.baseUrl}/random?apiKey=${AppStrings.apiKey}&number=5',
       ),
     );
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
       final List results = json['recipes'];
-      return results.map((e) => RecipeModel.fromJson(e)).toList();
+      return results.map((e) => RecipeDetailsModel.fromJson(e)).toList();
     } else {
       throw Exception('Failed to fetch random recipes');
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/service/api_service.dart';
-import '../../domain/entities/recipe.dart';
+import '../../domain/entities/recipe_entities.dart';
 
 class RecipeProvider extends ChangeNotifier {
   ApiService _apiService = ApiService();
@@ -16,20 +16,22 @@ class RecipeProvider extends ChangeNotifier {
   List<Recipe> _searchResults = [];
   List<Recipe> get searchResults => _searchResults;
 
-
+  bool _isCategoryLoading = false;
+  bool get isCategoryLoading => _isCategoryLoading;
 
   Future<void> fetchRecipesByCategory(String category) async {
-    _isLoading = true;
+    _isCategoryLoading = true; // এখানে ক্যাটাগরি লোডিং ট্রু হবে
     notifyListeners();
     try {
       _categoryRecipes = await _apiService.getRecipesByCategory(category);
     } catch (e) {
-      print('Error fetching category recipes: $e');
+      print('Error: $e');
     } finally {
-      _isLoading = false;
+      _isCategoryLoading = false; // লোডিং শেষ
       notifyListeners();
     }
   }
+
 
   Future<void> searchRecipes(String query) async {
     _isLoading = true;
