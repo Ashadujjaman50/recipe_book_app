@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../data/model/recipe_model.dart';
+import '../provider/recipe_provider.dart';
 import '../screen/food_details_screen.dart';
 
 class SaveRecipeItem extends StatelessWidget {
@@ -23,7 +26,7 @@ class SaveRecipeItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => FoodDetailsScreen(recipeId: id)),
@@ -62,11 +65,20 @@ class SaveRecipeItem extends StatelessWidget {
                 ],
               ),
             ),
-            Image.network(
-              'https://img.lightshot.app/sgYyX5kwTsqM623JXgAAaQ.png',
-              width: 24,
-              height: 24,
-              color: Colors.deepOrange,
+            // Remove Recipe Button
+            GestureDetector(
+              onTap: () {
+                // রিমুভ করার লজিক
+                context.read<RecipeProvider>().toggleSaveRecipe(
+                  RecipeModel(id: id, title: title, image: imgUrl),
+                );
+              },
+              child: Image.network(
+                'https://img.lightshot.app/sgYyX5kwTsqM623JXgAAaQ.png',
+                width: 24,
+                height: 24,
+                color: Colors.deepOrange, // সেভ করা রেসিপিতে আইকন হাইলাইট থাকবে
+              ),
             ),
           ],
         ),
