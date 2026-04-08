@@ -140,19 +140,24 @@ class _HomeScreenState extends State<HomeScreen> {
       height: 260,
       child: Consumer<RecipeProvider>(
         builder: (context, provider, child) {
-          // এখানে isLoading এর বদলে isCategoryLoading হবে
           if (provider.isCategoryLoading && provider.categoryRecipes.isEmpty) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (provider.categoryRecipes.isEmpty) {
-            return Center(child: Text('No recipes found.'));
+            return const Center(child: Text('No recipes found.'));
           }
           return ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: provider.categoryRecipes.length,
             itemBuilder: (context, index) {
+              final recipe = provider.categoryRecipes[index];
               return PopularRecipeCard(
-                context: context, title: provider.categoryRecipes[index].title, author: "Kadin Curtis", rating: "5.0", imgUrl: provider.categoryRecipes[index].image,
+                id: recipe.id,
+                context: context,
+                title: recipe.title,
+                author: "Kadin Curtis",
+                rating: "5.0",
+                imgUrl: recipe.image,
               );
             },
           );
@@ -173,6 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return Column(
           children: provider.weeklyRecipes.map((recipe) {
             return WeeklyRecipeCard(
+              id: recipe.id,
               context: context,
               title: recipe.title,
               author: "Terry Carder",

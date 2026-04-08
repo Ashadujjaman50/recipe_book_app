@@ -1,8 +1,12 @@
-class RecipeDetails {
-  final int id;
-  final String title;
-  final String image;
+import 'recipe_entities.dart';
+
+class RecipeDetails extends Recipe {
   final String summary;
 
-  RecipeDetails({required this.id, required this.title, required this.image, required this.summary});
+  RecipeDetails({
+    required super.id,
+    required super.title,
+    required super.image,
+    required this.summary,
+  });
 }

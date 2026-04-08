@@ -95,12 +95,12 @@ class SavedRecipesScreen extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  SaveRecipeItem(context: context, title: "Pancake", rating: "4.5", author: "Kadin Curtis", imgUrl: 'https://img.lightshot.app/y2v_pm1xR5uiIz099TKwIA.png'),
-                  SaveRecipeItem(context: context, title: "Oyster Dish", rating: "4.3", author: "Terry Carder", imgUrl: 'https://img.lightshot.app/ESesIcT8S82HFFY6oSYSVw.png'),
-                  SaveRecipeItem(context: context, title: "Fried Rice", rating: "4.8", author: "Carter Carder", imgUrl: 'https://img.lightshot.app/vYPAQEhATfa0yQ82AuC_dA.png'),
-                  SaveRecipeItem(context: context, title: "Greek Quinoa Salad", rating: "3.9", author: "Carter Carder", imgUrl: 'https://img.lightshot.app/QxCpEw-YSSyb-c4NJIdV0w.png'),
-                  SaveRecipeItem(context: context, title: "Classic Fluffy", rating: "3.8", author: "Desirae Herwitz", imgUrl: 'https://img.lightshot.app/mFKUgv0RRQaB_4-4grCr1Q.png'),
-                  SaveRecipeItem(context: context, title: "Cacao Maca Walnut", rating: "3.7", author: "Kadin Curtis", imgUrl: 'https://img.lightshot.app/z6H5Kx8CQX6-tmU-kTI_IA.png'),
+                  SaveRecipeItem(id:  659459, context: context, title: "Pancake", rating: "4.5", author: "Kadin Curtis", imgUrl: 'https://img.lightshot.app/y2v_pm1xR5uiIz099TKwIA.png'),
+                  SaveRecipeItem(id:  659459, context: context, title: "Oyster Dish", rating: "4.3", author: "Terry Carder", imgUrl: 'https://img.lightshot.app/ESesIcT8S82HFFY6oSYSVw.png'),
+                  SaveRecipeItem(id:  659459, context: context, title: "Fried Rice", rating: "4.8", author: "Carter Carder", imgUrl: 'https://img.lightshot.app/vYPAQEhATfa0yQ82AuC_dA.png'),
+                  SaveRecipeItem(id:  659459, context: context, title: "Greek Quinoa Salad", rating: "3.9", author: "Carter Carder", imgUrl: 'https://img.lightshot.app/QxCpEw-YSSyb-c4NJIdV0w.png'),
+                  SaveRecipeItem(id:  659459, context: context, title: "Classic Fluffy", rating: "3.8", author: "Desirae Herwitz", imgUrl: 'https://img.lightshot.app/mFKUgv0RRQaB_4-4grCr1Q.png'),
+                  SaveRecipeItem(id:  659459, context: context, title: "Cacao Maca Walnut", rating: "3.7", author: "Kadin Curtis", imgUrl: 'https://img.lightshot.app/z6H5Kx8CQX6-tmU-kTI_IA.png'),
                 ],
               ),
             ),

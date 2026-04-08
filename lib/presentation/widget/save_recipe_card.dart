@@ -5,6 +5,7 @@ import '../screen/food_details_screen.dart';
 class SaveRecipeItem extends StatelessWidget {
   const SaveRecipeItem({
     super.key,
+    required this.id,
     required this.context,
     required this.title,
     required this.rating,
@@ -12,6 +13,7 @@ class SaveRecipeItem extends StatelessWidget {
     required this.imgUrl,
   });
 
+  final int id;
   final BuildContext context;
   final String title;
   final String rating;
@@ -24,7 +26,7 @@ class SaveRecipeItem extends StatelessWidget {
       onTap: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const FoodDetailsScreen()),
+          MaterialPageRoute(builder: (context) => FoodDetailsScreen(recipeId: id)),
         );
       },
       child: Padding(
